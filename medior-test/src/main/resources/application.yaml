@@ -1,0 +1,50 @@
+spring:
+  thymeleaf:
+    view-names: login
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: validate
+    database-platform: org.hibernate.dialect.PostgreSQL95Dialect
+    database: postgresql
+  datasource:
+    name: contactsapi
+    url: jdbc:postgresql://localhost:15432/contactsapi
+    username: contactsapi
+    password: contactsapi
+    hikari:
+      connection-timeout: 20000
+      maximum-pool-size: 50
+      minimum-idle: 5
+  liquibase:
+    enabled: true
+    change-log: classpath:db/liquibase-changeLog.xml
+    contexts: prod
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 2000MB
+      max-request-size: 2000MB
+  mail:
+    enabled: false
+    sender: ASH Leltárnyilvántartó <asn@ashszoftverhaz.hu>
+    host: localhost
+    port: 25
+    username:
+    password:
+    properties:
+      mail.transport.protocol: smtp
+      mail.smtp.auth: false
+      mail.smtp.starttls.enable: false
+  sql:
+    init:
+      mode: never
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
