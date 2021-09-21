@@ -30,8 +30,8 @@ spring:
       max-file-size: 2000MB
       max-request-size: 2000MB
   mail:
-    enabled: false
-    sender: ASH Leltárnyilvántartó <asn@ashszoftverhaz.hu>
+    enabled: true
+    sender: Future of Media <fom@gmail.com>
     host: localhost
     port: 25
     username:
