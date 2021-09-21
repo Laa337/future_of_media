@@ -33,7 +33,7 @@ spring:
     enabled: true
     sender: Future of Media <fom@gmail.com>
     host: localhost
-    port: 25
+    port: 11025
     username:
     password:
     properties:

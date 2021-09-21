@@ -11,19 +11,24 @@ import org.springframework.web.bind.annotation.RestController;
 
 import hu.futureofmedia.mediortest.dao.dto.Contact;
 import hu.futureofmedia.mediortest.services.ContactService;
+import hu.futureofmedia.mediortest.services.EmailService;
 
 @RestController
 @RequestMapping(path = "contact")
 public class ContactController {
 
     private final ContactService contactService;
+    private final EmailService emailService;
 
-    public ContactController( ContactService contactService ) {
+    public ContactController( ContactService contactService, EmailService emailService ) {
         this.contactService = contactService;
+        this.emailService = emailService;
     }
 
     @PostMapping(path = "create", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Contact> create( @Valid @RequestBody Contact contact ) {
-        return ResponseEntity.ok(contactService.create(contact));
+        Contact createdContact = contactService.create(contact);
+        emailService.sendSimpleMessage(createdContact.getEmail(), "Udvozlet", String.format("Üdv, %s", createdContact.getFirstName()));
+        return ResponseEntity.ok(createdContact);
     }
 }
