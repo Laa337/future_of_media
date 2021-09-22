@@ -7,7 +7,9 @@ import javax.validation.Valid;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,9 +41,25 @@ public class ContactController {
         return ResponseEntity.ok(createdContact);
     }
 
-    @PostMapping(path = "all-active", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "update", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Contact> update( @Valid @RequestBody Contact contact ) {
+        return ResponseEntity.ok(contactService.update(contact));
+    }
+
+    @PostMapping(path = "all-active", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<ContactListItem>> getAllActive( @RequestBody PagedRequest request ) {
         List<ContactListItem> allActive = contactService.findAllActive(request);
         return ResponseEntity.ok(allActive);
+    }
+
+    @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Contact> getContact( @PathVariable Long id ) {
+        return contactService.findContactById(id).map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping(path = "/{id}")
+    public void delete( @PathVariable Long id ) {
+        contactService.delete(id);
     }
 }

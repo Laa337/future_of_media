@@ -1,12 +1,10 @@
 package hu.futureofmedia.mediortest.services;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
@@ -45,6 +43,12 @@ public class ContactService {
         return mapToDto(contactEntity);
     }
 
+    public Contact update( Contact contact ) {
+        ContactEntity entity = contactRepository.findById(contact.getId()).orElseThrow();
+        ContactEntity updatedEntity = contactRepository.save(mapToEntity(contact, entity));
+        return mapToDto(updatedEntity);
+    }
+
     public List<ContactListItem> findAllActive( PagedRequest request ) {
         Sort sort = (request.getSortField() == null || request.getSortField().equals("fullName")) ?
                 Sort.by("lastName").and(Sort.by("firstName")) :
@@ -56,11 +60,23 @@ public class ContactService {
         if ( StringUtils.isEmpty(request.getFilter()) ) {
             allActive = contactRepository.findAllByStatus(Status.ACTIVE, pageable);
         } else {
-            Page<ContactEntity> allActivePaged = contactRepository.findAll(contactFilter("d"), pageable);
+            Page<ContactEntity> allActivePaged = contactRepository.findAll(contactFilter(request.getFilter()), pageable);
             allActive = allActivePaged.getContent();
         }
 
         return allActive.stream().map(this::mapToListItem).collect(Collectors.toList());
+    }
+
+
+    public Optional<Contact> findContactById( Long id ) {
+        ContactEntity contactEntity = contactRepository.findById(id).orElse(null);
+        if(contactEntity==null)
+            return Optional.empty();
+        return Optional.of(mapToDto(contactEntity));
+    }
+
+    public void delete( Long id ) {
+        contactRepository.inActivateContact(id, Status.DELETED);
     }
 
     private ContactEntity mapToEntity( Contact contact ) {
