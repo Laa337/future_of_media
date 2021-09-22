@@ -53,3 +53,7 @@ Username: üres
 Password: üres  
 Authentikáció: kikapcsolva (`false`)  
 SSL/TLS: kikapcsolva
+
+## Indítás
+
+Egyszerű. A medior-test intellij-be való betöltése után csak egy clean package kell.
