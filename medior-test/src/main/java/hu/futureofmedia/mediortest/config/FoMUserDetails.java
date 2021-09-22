@@ -4,20 +4,14 @@ import java.util.Collection;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import hu.futureofmedia.mediortest.dao.entities.UserEntity;
 
 public class FoMUserDetails implements UserDetails {
-    private UserEntity user;
-
-
-//    private  PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(11);
+    private final UserEntity user;
 
     public FoMUserDetails( UserEntity user ) {
         this.user = user;
-        String secret = new BCryptPasswordEncoder(11).encode("secret");
-        System.out.println( secret + "\n" + user.getPassword());
     }
 
     @Override

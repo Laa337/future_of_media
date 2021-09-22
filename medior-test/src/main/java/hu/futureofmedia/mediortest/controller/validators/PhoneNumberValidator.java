@@ -9,8 +9,6 @@ import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
 
-import lombok.SneakyThrows;
-
 public class PhoneNumberValidator implements ConstraintValidator<PhoneValidE164, String> {
     private  PhoneNumberUtil phoneNumberUtil;
 

@@ -1,6 +1,4 @@
 spring:
-  thymeleaf:
-    view-names: login
   jpa:
     open-in-view: false
     properties:
